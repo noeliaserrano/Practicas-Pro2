@@ -21,20 +21,37 @@
 #include "static_list.h"
 #endif
 
+void new(){
 
+}
+void delete(){
 
+}
+void bid(){
+
+}
+void stats(tList list){
+
+}
 
 void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4) {
 
     switch (command) {
         case 'N':
+            printf("********************\n");
             printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
             break;
         case 'S':
+            printf("********************\n");
+            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
             break;
         case 'B':
+            printf("********************\n");
+            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
             break;
         case 'D':
+            printf("********************\n");
+            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
             break;
         default:
             break;
