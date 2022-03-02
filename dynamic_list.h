@@ -19,7 +19,7 @@
 typedef struct tNode* tPosL;
 
 struct tNode {
-    tItemL data;
+    tItemL product;
     tPosL next;
 };
 

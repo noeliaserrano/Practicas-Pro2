@@ -66,7 +66,7 @@ void deleteAtPosition (tPosL p, tList *L){
     }
     else{
         q = p->next;
-        p->data = q->data;
+        p->product = q->product;
         p->next = q->next;
         p = q;
     }
@@ -78,7 +78,7 @@ tItemL getItem(tPosL p, tList *L){
 }
 
 void updateItem (tItemL d, tPosL p, tList *L){
-    p->data = d;
+    p->product = d;
 }
 
 tPosL findItem (tProductId t, tList L){
