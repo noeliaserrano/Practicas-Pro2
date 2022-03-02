@@ -19,8 +19,8 @@
 typedef struct tNode* tPosL;
 
 struct tNode {
-    tItemL users;
-    tPosL data;
+    tItemL data;
+    tPosL next;
 };
 
 typedef tPosL tList;
@@ -64,7 +64,7 @@ void deleteAtPosition (tPosL, tList*);
     PostCD: Las posiciones de los elementos de la lista posteriores a la de la
     posición eliminada pueden haber variado.*/
 
-tItemL getItem (tPosL, tList);
+tItemL getItem(tPosL, tList*);
     /*Devuelve el contenido del elemento de la lista que ocupa la posición indicada.
     PreCD: La posición indicada es una posición válida en la lista.*/
 
