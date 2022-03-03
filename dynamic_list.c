@@ -10,6 +10,11 @@
 #include "dynamic_list.h"
 #include <string.h>
 
+bool createNode(tPosL* p){
+    *p = malloc(sizeof(struct tNode));
+    return *p = LNULL;
+}
+
 void createEmptyList (tList *L){
     *L = LNULL;
 }
@@ -19,7 +24,7 @@ bool isEmptyList (tList L){
 }
 
 tPosL first (tList L){
-
+    return L;
 }
 
 tPosL last (tList L){ //no se comprueba que la lista este vacia, porque es una precondicion
@@ -36,7 +41,7 @@ tPosL last (tList L){ //no se comprueba que la lista este vacia, porque es una p
 }
 
 tPosL next (tPosL p, tList L){
-
+    return p -> next;
 }
 
 tPosL previous (tPosL p, tList L){
@@ -51,8 +56,29 @@ tPosL previous (tPosL p, tList L){
     return aux;
 }
 
-bool insertItem (tItemL, tPosL p, tList *L){
-
+bool insertItem (tItemL d, tPosL p, tList *L){
+    tPosL a, b;
+    if(!createNode(&a))
+        return false;
+    else{
+        a -> product = d;
+        b -> next = LNULL;
+        if(*L==LNULL) {
+            *L = a;
+        } else if(p == LNULL) {
+            for (b = *L; (b -> next) != LNULL; b = b -> next);
+            b -> next = a;
+        } else if(p == *L) {
+            a -> next = *L;
+            *L = a;
+        } else {
+            a -> product = p -> product;
+            a -> next = p -> next;
+            a -> next = b;
+            p -> product = d;
+        }
+        return true;
+    }
 }
 
 void deleteAtPosition (tPosL p, tList *L){
@@ -74,7 +100,7 @@ void deleteAtPosition (tPosL p, tList *L){
 }
 
 tItemL getItem(tPosL p, tList *L){
-
+    return p -> product;
 }
 
 void updateItem (tItemL d, tPosL p, tList *L){
@@ -82,5 +108,10 @@ void updateItem (tItemL d, tPosL p, tList *L){
 }
 
 tPosL findItem (tProductId t, tList L){
-
+    tPosL p;
+    if(isEmptyList(L))
+        p = LNULL;
+    else
+        for(p = L; (p != LNULL) && (strcmp(p -> product.productId, t)); p = p -> next);
+    return p;
 }
