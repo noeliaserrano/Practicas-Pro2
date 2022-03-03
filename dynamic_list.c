@@ -10,13 +10,14 @@
 #include "dynamic_list.h"
 #include <string.h>
 
-bool createNode(tPosL* p){
-    *p = malloc(sizeof(struct tNode));
-    return *p = LNULL;
-}
 
 void createEmptyList (tList *L){
     *L = LNULL;
+}
+
+bool createNode(tPosL* p){
+    *p = malloc(sizeof(struct tNode));
+    return *p != LNULL;
 }
 
 bool isEmptyList (tList L){
@@ -62,19 +63,20 @@ bool insertItem (tItemL d, tPosL p, tList *L){
         return false;
     else{
         a -> product = d;
-        b -> next = LNULL;
+        a -> next = LNULL;
         if(*L==LNULL) {
             *L = a;
         } else if(p == LNULL) {
-            for (b = *L; (b -> next) != LNULL; b = b -> next);
+            for (b = *L; b -> next != LNULL; b = b -> next);
             b -> next = a;
         } else if(p == *L) {
-            a -> next = *L;
+            a -> next = p;
             *L = a;
         } else {
-            a -> product = p -> product;
             a -> next = p -> next;
-            a -> next = b;
+            p -> next = a;
+
+            a -> product = p -> product;
             p -> product = d;
         }
         return true;
@@ -88,7 +90,7 @@ void deleteAtPosition (tPosL p, tList *L){
         *L = (*L)->next;
     else if(p->next == LNULL){
         for (q = *L; q->next != p; q = q->next);
-        q->next == LNULL;
+        q->next = LNULL;
     }
     else{
         q = p->next;
