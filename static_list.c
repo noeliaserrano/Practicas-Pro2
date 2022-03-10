@@ -15,7 +15,7 @@ void createEmptyList(tList* L){
 }
 
 bool isEmptyList(tList L){
-
+    return L.lastPos == LNULL;
 }
 
 tPosL first(tList L){
@@ -23,7 +23,7 @@ tPosL first(tList L){
 }
 
 tPosL last(tList L){
-
+    return L.lastPos;
 }
 
 tPosL next(tPosL p, tList L){
@@ -34,7 +34,10 @@ tPosL next(tPosL p, tList L){
 }
 
 tPosL previous(tPosL p, tList L){
-
+    if(p == first(L))
+        return LNULL;
+    else
+        return --p;
 }
 
 bool insertItem(tItemL d, tPosL p, tList* L){
@@ -55,13 +58,17 @@ bool insertItem(tItemL d, tPosL p, tList* L){
     }
 }
 
-void deleteAtPosition(tPosL, tList*);
+void deleteAtPosition(tPosL p, tList* L) {
+    tPosL a;
+}
 
 tItemL getItem(tPosL p, tList L){
     return L.Product[p];
 }
 
-void updateItem(tItemL, tPosL, tList*);
+void updateItem(tItemL d, tPosL p, tList* L){
+    L -> Product[p] = d;
+}
 
 tPosL findItem(tProductId t, tList L){
     tPosL a;

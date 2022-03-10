@@ -1,4 +1,4 @@
-/home/noelia/Pro2/P1/P1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/noelia/Pro2/P1/P1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/noelia/Pro2/P1/P1/cmake-build-debug/CMakeFiles/test_lists.dir
-/home/noelia/Pro2/P1/P1/cmake-build-debug/CMakeFiles/main.dir
+C:/Users/yo/Practicas-Pro2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/yo/Practicas-Pro2/cmake-build-debug/CMakeFiles/main.dir
+C:/Users/yo/Practicas-Pro2/cmake-build-debug/CMakeFiles/test_lists.dir
+C:/Users/yo/Practicas-Pro2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
