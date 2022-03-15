@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "../bin/main.exe"
-  "../bin/main.exe.manifest"
+  "../bin/main"
   "../bin/main.pdb"
-  "CMakeFiles/main.dir/dynamic_list.c.obj"
-  "CMakeFiles/main.dir/main.c.obj"
-  "libmain.dll.a"
+  "CMakeFiles/main.dir/main.c.o"
+  "CMakeFiles/main.dir/main.c.o.d"
+  "CMakeFiles/main.dir/static_list.c.o"
+  "CMakeFiles/main.dir/static_list.c.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

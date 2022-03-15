@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "../bin/test_lists.exe"
-  "../bin/test_lists.exe.manifest"
+  "../bin/test_lists"
   "../bin/test_lists.pdb"
-  "CMakeFiles/test_lists.dir/dynamic_list.c.obj"
-  "CMakeFiles/test_lists.dir/test.c.obj"
-  "libtest_lists.dll.a"
+  "CMakeFiles/test_lists.dir/static_list.c.o"
+  "CMakeFiles/test_lists.dir/static_list.c.o.d"
+  "CMakeFiles/test_lists.dir/test.c.o"
+  "CMakeFiles/test_lists.dir/test.c.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="6339fd39-7b81-49a5-9c39-e20468a24c32" name="10.11.28.50" url="http://10.10.5.120">
-        <fileTransfer rootFolder="/home/UDC/20091117192149031/linux" accessType="SFTP" host="10.10.5.120" port="22" sshConfigId="33db0e04-883b-47a9-a0f8-ea16af3e4341" sshConfig="noelia.serrano@udc.es@10.10.5.120:22 password">
+      <webServer id="9d95d886-d629-474a-8f56-fb73e632ef69" name="10.11.28.50" url="http://10.11.28.50">
+        <fileTransfer rootFolder="/home/UDC/98420/linux" accessType="SFTP" host="10.11.28.50" port="22" sshConfigId="53e0ac74-281f-4c88-a573-de0e826d9cca" sshConfig="noelia.serrano@udc.es@10.11.28.50:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

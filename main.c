@@ -21,10 +21,11 @@
 #include "static_list.h"
 #endif
 
-void new(){
+
+void new(tList *L){
 
 }
-void delete(){
+void delete(tList *L){
 
 }
 void bid(){

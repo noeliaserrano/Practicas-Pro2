@@ -1,22 +1,15 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "C"
-  )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/yo/Practicas-Pro2/dynamic_list.c" "C:/Users/yo/Practicas-Pro2/cmake-build-debug/CMakeFiles/main.dir/dynamic_list.c.obj"
-  "C:/Users/yo/Practicas-Pro2/main.c" "C:/Users/yo/Practicas-Pro2/cmake-build-debug/CMakeFiles/main.dir/main.c.obj"
-  )
-set(CMAKE_C_COMPILER_ID "GNU")
-
-# Preprocessor definitions for this target.
-set(CMAKE_TARGET_DEFINITIONS_C
-  "DYNAMIC_LIST"
-  "INPUT_FILE=\"new.txt\""
   )
 
-# The include file search paths:
-set(CMAKE_C_TARGET_INCLUDE_PATH
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/noelia/Pro2/P1/P1/main.c" "CMakeFiles/main.dir/main.c.o" "gcc" "CMakeFiles/main.dir/main.c.o.d"
+  "/home/noelia/Pro2/P1/P1/static_list.c" "CMakeFiles/main.dir/static_list.c.o" "gcc" "CMakeFiles/main.dir/static_list.c.o.d"
   )
 
 # Targets to which this target links.
