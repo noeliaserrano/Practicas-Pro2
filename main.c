@@ -22,17 +22,57 @@
 #endif
 
 
-void new(tList *L){
+void new(char *userId, char *productId, char *productCategory, float *productPrice, tList *L){
+    //definicion de datos
+}
+
+void delete(char *productId, tList *L){
+    tPosL p = findItem(productId, *L);
+    tItemL aux;
+
+    if(p == LNULL)
+        printf("+ Error: Delete not possible\n");
+    else{
+        aux = getItem(p, *L);
+        deleteAtPosition(p, L);
+
+        printf("* Delete: product %s seller %s ", productId, aux.seller);
+
+        //selecccion de categoria
+        if(aux.productCategory == painting)
+            printf("category %s ", "painting");
+        else printf("category %s ", "book");
+
+        printf("price %0.2f bids %d\n", aux.productPrice, aux.bidCounter);
+    }
 
 }
-void delete(tList *L){
 
-}
-void bid(){
+void bid(char *productId, char *userId, float *productPrice, tList *L){
+    tPosL p = findItem(productId, *L);
+    tItemL aux;
+    aux = getItem(p, *L);
 
+    if(p == LNULL || strcmp(aux.seller, aux.bidder) || aux.productPrice<*productPrice) //precio pujado mayor al precio inicial
+        printf("+ Error: Bid not possible\n");      //podemos crear otro usuario
+
+    else{ //buscar el producto, actualizar el precio, modificar el contador de pujas
+
+        updateItem(aux, p, *L);
+        aux.bidCounter++;
+
+        printf("* Bid: product %s seller %s ", productId, userId); //como diferenciar los dos usuarios
+
+        if(aux.productCategory == painting)
+            printf("category %s ", "painting");
+        else printf("category %s ", "book");
+
+        printf("price %0.2f bids %d\n", productPrice, aux.bidCounter);
+    }
 }
+
 void stats(tList list){
-
+    //ver cuantos contadores hacen falta, poner los printf
 }
 
 void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4) {
