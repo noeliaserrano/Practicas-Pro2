@@ -63,12 +63,14 @@ void delete(char *productId, tList *L){ //No imprime seller, hay que aumentar la
 
 }
 
-void bid(char *productId, char *userId, float *productPrice, tList *L){
+void bid(char *productId, char *userId, float productPrice, tList *L){
     tPosL p = findItem(productId, *L);
+    //asegurarse de que p es una posicion valida
+    //quitar el puntero de float process...
     tItemL aux;
-    //aux = getItem(p, L);
+    aux = getItem(p, L);
 
-    if(p == LNULL || strcmp(aux.seller, userId) || aux.productPrice > *productPrice) //precio pujado mayor al precio inicial
+    if(p == LNULL || strcmp(aux.seller, userId) != 0 || aux.productPrice > productPrice) //precio pujado mayor al precio inicial
         printf("+ Error: Bid not possible\n");
 
     else{
@@ -138,7 +140,7 @@ void bid(char *productId, char *userId, float *productPrice, tList *L){
     printf("Painting  %8d %8.2f %8.2f\n", paintingCont, paintSumPrice, paintMediaPrice);
 }*/
 
-void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4, tList *L) {
+void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char param4, tList *L) {
 
     switch (command) {
         case 'N':
