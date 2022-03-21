@@ -2,9 +2,9 @@
  * TITLE: PROGRAMMING II LABS
  * SUBTITLE: Practical 1
  * AUTHOR 1: Noelia Serrano Abraldes LOGIN 1: noelia.serrano
- * AUTHOR 2: Pedro Chan Piñeiro LOGIN 2: pedro.chan.pineiro
+ * AUTHOR 2: Pedro Chan Piñeiro      LOGIN 2: pedro.chan.pineiro
  * GROUP: 1.3
- * DATE: ** / ** / **
+ * DATE: 25 / 03 / 22
  */
 
 #include <stdio.h>
@@ -22,11 +22,26 @@
 #endif
 
 
-void new(char *userId, char *productId, char *productCategory, float *productPrice, tList *L){
-    //definicion de datos
+void new(char *productId, char *userId, char *productCategory, char *productPrice, tList *L){
+    tItemL aux;
+
+    strcpy(aux.productId, productId);
+
+    if(strcmp(productCategory, "book") == 0)
+        aux.productCategory = book;
+    else aux.productCategory = painting;
+
+    if(findItem(aux.productId, *L) == LNULL){
+        if(insertItem(aux, LNULL, L))//{
+            printf("* New: product %s seller %s category %s price %0.2f\n", productId, userId, productCategory, productPrice);
+        /*} else
+            printf("+ Error: New not possible\n");
+            return;*/
+    } else
+        printf("+ Error: New not possible\n");
 }
 
-void delete(char *productId, tList *L){
+void delete(char *productId, tList *L){ //No imprime seller, hay que aumentar las pujas?
     tPosL p = findItem(productId, *L);
     tItemL aux;
 
@@ -51,17 +66,17 @@ void delete(char *productId, tList *L){
 void bid(char *productId, char *userId, float *productPrice, tList *L){
     tPosL p = findItem(productId, *L);
     tItemL aux;
-    aux = getItem(p, *L);
+    //aux = getItem(p, L);
 
-    if(p == LNULL || strcmp(aux.seller, aux.bidder) || aux.productPrice<*productPrice) //precio pujado mayor al precio inicial
-        printf("+ Error: Bid not possible\n");      //podemos crear otro usuario
+    if(p == LNULL || strcmp(aux.seller, userId) || aux.productPrice > *productPrice) //precio pujado mayor al precio inicial
+        printf("+ Error: Bid not possible\n");
 
-    else{ //buscar el producto, actualizar el precio, modificar el contador de pujas
-
-        updateItem(aux, p, *L);
+    else{
+        aux = getItem(p, L);
+        updateItem(aux, p, L);
         aux.bidCounter++;
 
-        printf("* Bid: product %s seller %s ", productId, userId); //como diferenciar los dos usuarios
+        printf("* Bid: product %s seller %s ", productId, userId);
 
         if(aux.productCategory == painting)
             printf("category %s ", "painting");
@@ -71,28 +86,80 @@ void bid(char *productId, char *userId, float *productPrice, tList *L){
     }
 }
 
-void stats(tList list){
-    //ver cuantos contadores hacen falta, poner los printf
-}
+/*void stats(tList list){
+    tPosL p;
+    tItemL aux;
 
-void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4) {
+    //total productos, suma y media de precios
+    int bookCont = 0;
+    int bookSumPrice = 0;
+    float bookMediaPrice = 0;
+
+    int paintingCont = 0;
+    int paintSumPrice = 0;
+    float paintMediaPrice = 0;
+
+    if(isEmptyList(list)){
+        printf("+ Error: Stats not possible\n");
+        return;
+    }
+    for (p=first(list); p!=LNULL; p=next(p, list)) {
+        aux= getItem(p, list);
+        printf("Product %s seller %s \n", aux.productId, aux.seller);
+
+        if(aux.productCategory==book){
+            bookCont++;
+            bookSumPrice+=aux.productPrice;
+
+            printf("category %d \n", book);
+        }else{
+            paintingCont++;
+            paintSumPrice+=aux.productPrice;
+
+            printf("category %d \n", painting);
+        }
+
+        printf("price %0.2f bids %d\n", aux.productPrice, aux.bidCounter);
+    }
+
+    //calculamos el precio medio
+    if(bookCont==0)
+        bookMediaPrice = 0.0;
+    else
+        bookMediaPrice = bookSumPrice/bookCont;
+
+    if(paintingCont==0)
+        paintMediaPrice = 0;
+    else
+        paintMediaPrice = paintSumPrice/paintingCont;
+
+    printf("Category  Products    Price  Average\n");
+    printf("Book      %8d %8.2f %8.2f\n", bookCont, bookSumPrice, bookMediaPrice);
+    printf("Painting  %8d %8.2f %8.2f\n", paintingCont, paintSumPrice, paintMediaPrice);
+}*/
+
+void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4, tList *L) {
 
     switch (command) {
         case 'N':
             printf("********************\n");
-            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
-            break;
-        case 'S':
-            printf("********************\n");
-            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
-            break;
-        case 'B':
-            printf("********************\n");
-            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
+            printf("%s %c: product %s seller %s category %s price %0.2f\n", commandNumber, command, param1, param2, param3, strtof(param4, NULL));
+            new(param1, param2, param3, param4, L);
             break;
         case 'D':
             printf("********************\n");
-            printf("Command: %s %c %s %s %s %s\n", commandNumber, command, param1, param2, param3, param4);
+            printf("%s %c: product %s\n", commandNumber, command, param1);
+            delete(param1, L);
+            break;
+        case 'B':
+            printf("********************\n");
+            printf("%s %c: product %s bidder %s price %0.2f\n", commandNumber, command, param1, param2, param4);
+            bid(param1, param2, param4, L);
+            break;
+        case 'S':
+            printf("********************\n");
+            printf("%s %c\n", commandNumber, command);
+            //stats(*L);
             break;
         default:
             break;
@@ -104,6 +171,9 @@ void readTasks(char *filename) {
     char *commandNumber, *command, *param1, *param2, *param3, *param4;
     const char delimiters[] = " \n\r";
     char buffer[MAX_BUFFER];
+
+    tList L;
+    createEmptyList(&L);
 
     f = fopen(filename, "r");
 
@@ -117,7 +187,7 @@ void readTasks(char *filename) {
             param3 = strtok(NULL, delimiters);
             param4 = strtok(NULL, delimiters);
 
-            processCommand(commandNumber, command[0], param1, param2, param3, param4);
+            processCommand(commandNumber, command[0], param1, param2, param3, param4, &L);
         }
 
         fclose(f);
