@@ -79,7 +79,7 @@ void deleteAtPosition(tPosL, tList*);
      * PostCD: Las posiciones de los elementos de la lista posteriores a la de la
      * posición eliminada pueden haber variado.*/
 
-tItemL getItem(tPosL, tList);
+tItemL getItem(tPosL, tList*);
     /* Objetivo: Devuelve el contenido del elemento de la lista que ocupa la posición indicada.
      * Entrada: tPosL: posicion del elemento buscado
      *          tList: lista donde buscar

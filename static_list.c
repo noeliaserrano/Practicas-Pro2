@@ -65,8 +65,8 @@ void deleteAtPosition(tPosL p, tList* L){
     L->lastPos--;
 }
 
-tItemL getItem(tPosL p, tList L){
-    return L.Product[p];
+tItemL getItem(tPosL p, tList* L){
+    return L->Product[p];
 }
 
 void updateItem(tItemL d, tPosL p, tList* L){

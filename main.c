@@ -22,10 +22,12 @@
 #endif
 
 
-void new(char *productId, char *userId, char *productCategory, char *productPrice, tList *L){
+void new(char *productId, char *userId, char *productCategory, float productPrice, tList *L){
     tItemL aux;
 
     strcpy(aux.productId, productId);
+    strcpy(aux.seller, userId);
+    aux.productPrice = productPrice;
 
     if(strcmp(productCategory, "book") == 0)
         aux.productCategory = book;
@@ -48,7 +50,7 @@ void delete(char *productId, tList *L){ //No imprime seller, hay que aumentar la
     if(p == LNULL)
         printf("+ Error: Delete not possible\n");
     else{
-        aux = getItem(p, *L);
+        aux = getItem(p, L);
         deleteAtPosition(p, L);
 
         printf("* Delete: product %s seller %s ", productId, aux.seller);
@@ -63,19 +65,22 @@ void delete(char *productId, tList *L){ //No imprime seller, hay que aumentar la
 
 }
 
-void bid(char *productId, char *userId, float productPrice, tList *L){
-    tPosL p = findItem(productId, *L);
-    //asegurarse de que p es una posicion valida
-    //quitar el puntero de float process...
-    tItemL aux;
-    aux = getItem(p, L);
+void bid(char *productId, char *userId, float productPrice, tList L) {
 
-    if(p == LNULL || strcmp(aux.seller, userId) != 0 || aux.productPrice > productPrice) //precio pujado mayor al precio inicial
+    tPosL p = findItem(productId, L);
+    tItemL aux;
+    if (p == LNULL){
+        printf("+ Error: Bid not possible\n");
+        return;
+    }
+    aux = getItem(p, &L);
+
+    if(strcmp(aux.seller, userId) == 0 || aux.productPrice >= productPrice) //precio pujado mayor al precio inicial
         printf("+ Error: Bid not possible\n");
 
     else{
-        aux = getItem(p, L);
-        updateItem(aux, p, L);
+        aux = getItem(p, &L);
+        updateItem(aux, p, &L);
         aux.bidCounter++;
 
         printf("* Bid: product %s seller %s ", productId, userId);
@@ -88,37 +93,37 @@ void bid(char *productId, char *userId, float productPrice, tList *L){
     }
 }
 
-/*void stats(tList list){
+void stats(tList list){
     tPosL p;
     tItemL aux;
 
     //total productos, suma y media de precios
     int bookCont = 0;
-    int bookSumPrice = 0;
-    float bookMediaPrice = 0;
+    float bookSumPrice = 0;
+    float bookMediaPrice;
 
     int paintingCont = 0;
-    int paintSumPrice = 0;
-    float paintMediaPrice = 0;
+    float paintSumPrice = 0;
+    float paintMediaPrice;
 
     if(isEmptyList(list)){
         printf("+ Error: Stats not possible\n");
         return;
     }
     for (p=first(list); p!=LNULL; p=next(p, list)) {
-        aux= getItem(p, list);
-        printf("Product %s seller %s \n", aux.productId, aux.seller);
+        aux= getItem(p, &list);
+        printf("Product %s seller %s ", aux.productId, aux.seller);
 
         if(aux.productCategory==book){
             bookCont++;
             bookSumPrice+=aux.productPrice;
 
-            printf("category %d \n", book);
+            printf("category %s ", "book");
         }else{
             paintingCont++;
             paintSumPrice+=aux.productPrice;
 
-            printf("category %d \n", painting);
+            printf("category %s ", "painting");
         }
 
         printf("price %0.2f bids %d\n", aux.productPrice, aux.bidCounter);
@@ -126,27 +131,29 @@ void bid(char *productId, char *userId, float productPrice, tList *L){
 
     //calculamos el precio medio
     if(bookCont==0)
-        bookMediaPrice = 0.0;
+        bookMediaPrice = 0;
     else
-        bookMediaPrice = bookSumPrice/bookCont;
+        bookMediaPrice = bookSumPrice/(float)bookCont;
 
     if(paintingCont==0)
         paintMediaPrice = 0;
     else
-        paintMediaPrice = paintSumPrice/paintingCont;
+        paintMediaPrice = paintSumPrice/(float)paintingCont;
 
     printf("Category  Products    Price  Average\n");
     printf("Book      %8d %8.2f %8.2f\n", bookCont, bookSumPrice, bookMediaPrice);
     printf("Painting  %8d %8.2f %8.2f\n", paintingCont, paintSumPrice, paintMediaPrice);
-}*/
+}
 
-void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char param4, tList *L) {
+void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4, tList *L) {
 
+    float pr;
     switch (command) {
         case 'N':
+            pr = atof(param4);
             printf("********************\n");
-            printf("%s %c: product %s seller %s category %s price %0.2f\n", commandNumber, command, param1, param2, param3, strtof(param4, NULL));
-            new(param1, param2, param3, param4, L);
+            printf("%s %c: product %s seller %s category %s price %0.2f\n", commandNumber, command, param1, param2, param3, pr);
+            new(param1, param2, param3, pr, L);
             break;
         case 'D':
             printf("********************\n");
@@ -154,14 +161,15 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             delete(param1, L);
             break;
         case 'B':
+            pr = atof(param3);
             printf("********************\n");
-            printf("%s %c: product %s bidder %s price %0.2f\n", commandNumber, command, param1, param2, param4);
-            bid(param1, param2, param4, L);
+            printf("%s %c: product %s bidder %s price %0.2f\n", commandNumber, command, param1, param2, pr);
+            bid(param1, param2, pr, *L);
             break;
         case 'S':
             printf("********************\n");
             printf("%s %c\n", commandNumber, command);
-            //stats(*L);
+            stats(*L);
             break;
         default:
             break;
