@@ -22,28 +22,32 @@
 #endif
 
 
-void new(char *productId, char *userId, char *productCategory, float productPrice, tList *L){
+void new(char *productId, char *userId, char *productCategory, float productPrice, tList *L) {
     tItemL aux;
 
+    //copiamos los elementos que va a tener la lista
     strcpy(aux.productId, productId);
     strcpy(aux.seller, userId);
     aux.productPrice = productPrice;
 
-    if(strcmp(productCategory, "book") == 0)
+    //seleccionamos la categoria que queremos
+    if (strcmp(productCategory, "book") == 0)
         aux.productCategory = book;
     else aux.productCategory = painting;
 
-    if(findItem(aux.productId, *L) == LNULL){
-        if(insertItem(aux, LNULL, L))//{
-            printf("* New: product %s seller %s category %s price %0.2f\n", productId, userId, productCategory, productPrice);
-        /*} else
+    if (findItem(aux.productId, *L) == LNULL) {     //buscamos el primer elem de la lista
+        if (insertItem(aux, LNULL, L)){             //insertar elementos en la lista
+            printf("* New: product %s seller %s category %s price %0.2f\n", productId, userId, productCategory,
+                   productPrice);
+        } else{
             printf("+ Error: New not possible\n");
-            return;*/
+            return;
+        }
     } else
         printf("+ Error: New not possible\n");
 }
 
-void delete(char *productId, tList *L){ //No imprime seller, hay que aumentar las pujas?
+void delete(char *productId, tList *L){
     tPosL p = findItem(productId, *L);
     tItemL aux;
 
@@ -65,31 +69,32 @@ void delete(char *productId, tList *L){ //No imprime seller, hay que aumentar la
 
 }
 
-void bid(char *productId, char *userId, float productPrice, tList L) {
+void bid(char *productId, char *userId, float productPrice, tList* L) {
 
-    tPosL p = findItem(productId, L);
+    tPosL p = findItem(productId, *L);
     tItemL aux;
     if (p == LNULL){
         printf("+ Error: Bid not possible\n");
         return;
     }
-    aux = getItem(p, &L);
+    aux = getItem(p, L);
 
     if(strcmp(aux.seller, userId) == 0 || aux.productPrice >= productPrice) //precio pujado mayor al precio inicial
         printf("+ Error: Bid not possible\n");
 
     else{
-        aux = getItem(p, &L);
-        updateItem(aux, p, &L);
-        aux.bidCounter++;
+        aux.productPrice = productPrice;
+        aux.bidCounter = aux.bidCounter+1;
 
-        printf("* Bid: product %s seller %s ", productId, userId);
+        printf("* Bid: product %s seller %s ", productId, aux.seller);
 
         if(aux.productCategory == painting)
             printf("category %s ", "painting");
         else printf("category %s ", "book");
 
         printf("price %0.2f bids %d\n", productPrice, aux.bidCounter);
+
+        updateItem(aux, p, L);
     }
 }
 
@@ -97,28 +102,29 @@ void stats(tList list){
     tPosL p;
     tItemL aux;
 
-    //total productos, suma y media de precios
-    int bookCont = 0;
-    float bookSumPrice = 0;
-    float bookMediaPrice;
+    int bookCont = 0;           //contador de libros
+    float bookSumPrice = 0;     //suma el precio de los libros
+    float bookMediaPrice;       //media de los precios
 
-    int paintingCont = 0;
-    float paintSumPrice = 0;
-    float paintMediaPrice;
+    int paintingCont = 0;       //contador de pinturas
+    float paintSumPrice = 0;    //suma el precio de las pinturas
+    float paintMediaPrice;      //media de los precios
 
     if(isEmptyList(list)){
         printf("+ Error: Stats not possible\n");
         return;
     }
+
     for (p=first(list); p!=LNULL; p=next(p, list)) {
         aux= getItem(p, &list);
         printf("Product %s seller %s ", aux.productId, aux.seller);
 
-        if(aux.productCategory==book){
-            bookCont++;
-            bookSumPrice+=aux.productPrice;
+        if(aux.productCategory==book){          //si categoria es libro
+            bookCont++;                         //contador suma 1
+            bookSumPrice+=aux.productPrice;     //suma el precio del producto
 
             printf("category %s ", "book");
+
         }else{
             paintingCont++;
             paintSumPrice+=aux.productPrice;
@@ -140,20 +146,20 @@ void stats(tList list){
     else
         paintMediaPrice = paintSumPrice/(float)paintingCont;
 
-    printf("Category  Products    Price  Average\n");
+    printf("\nCategory  Products    Price  Average\n");
     printf("Book      %8d %8.2f %8.2f\n", bookCont, bookSumPrice, bookMediaPrice);
     printf("Painting  %8d %8.2f %8.2f\n", paintingCont, paintSumPrice, paintMediaPrice);
 }
 
 void processCommand(char *commandNumber, char command, char *param1, char *param2, char *param3, char *param4, tList *L) {
 
-    float pr;
+    float price;
     switch (command) {
         case 'N':
-            pr = atof(param4);
+            price = atof(param4);
             printf("********************\n");
-            printf("%s %c: product %s seller %s category %s price %0.2f\n", commandNumber, command, param1, param2, param3, pr);
-            new(param1, param2, param3, pr, L);
+            printf("%s %c: product %s seller %s category %s price %0.2f\n", commandNumber, command, param1, param2, param3, price);
+            new(param1, param2, param3, price, L);
             break;
         case 'D':
             printf("********************\n");
@@ -161,10 +167,10 @@ void processCommand(char *commandNumber, char command, char *param1, char *param
             delete(param1, L);
             break;
         case 'B':
-            pr = atof(param3);
+            price = atof(param3);
             printf("********************\n");
-            printf("%s %c: product %s bidder %s price %0.2f\n", commandNumber, command, param1, param2, pr);
-            bid(param1, param2, pr, *L);
+            printf("%s %c: product %s bidder %s price %0.2f\n", commandNumber, command, param1, param2, price);
+            bid(param1, param2, price, L);
             break;
         case 'S':
             printf("********************\n");
@@ -215,18 +221,12 @@ int main(int nargs, char **args) {
     if (nargs > 1) {
         file_name = args[1];
     } else {
-        #ifdef INPUT_FILE
+#ifdef INPUT_FILE
         file_name = INPUT_FILE;
-        #endif
+#endif
     }
 
     readTasks(file_name);
 
     return 0;
 }
-
-
-
-
-
-
